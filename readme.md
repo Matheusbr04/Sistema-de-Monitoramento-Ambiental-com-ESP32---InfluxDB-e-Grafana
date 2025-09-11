@@ -204,6 +204,8 @@ Conectado!
 
 No Grafana, configure o InfluxDB como Data Source e crie gráficos em tempo real de temperatura, umidade e fumaça.
 
+📷 ![Visualização com Grafana](dashboard.jpg)
+
 ✅ Conclusão
 
 Este projeto permite monitorar remotamente ambientes críticos como datacenters, salas técnicas e CPDs, sem necessidade de interação humana para autenticação em redes Wi-Fi protegidas por login.
