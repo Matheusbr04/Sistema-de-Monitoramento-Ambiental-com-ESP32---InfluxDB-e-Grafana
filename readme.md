@@ -204,7 +204,7 @@ Conectado!
 
 No Grafana, configure o InfluxDB como Data Source e crie gráficos em tempo real de temperatura, umidade e fumaça.
 
-📷 ![Visualização com Grafana](dashboard.jpg)
+![Visualização com Grafana](dashboard.jpg)
 
 ✅ Conclusão
 
