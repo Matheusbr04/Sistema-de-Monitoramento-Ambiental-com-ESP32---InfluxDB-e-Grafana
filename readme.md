@@ -1,105 +1,110 @@
-🌍 Sistema de Monitoramento Ambiental com ESP32 + InfluxDB + Grafana
+# 🌍 Sistema de Monitoramento Ambiental com ESP32 + InfluxDB + Grafana
 
-🚀 Projeto de IoT para monitoramento de temperatura, umidade e fumaça em ambientes críticos (como datacenters e CPDs).
-O sistema utiliza ESP32 + DHT11 + MQ-135, enviando os dados para o InfluxDB e exibindo dashboards em tempo real no Grafana.
+🚀 **Projeto de IoT** para monitoramento de temperatura, umidade e
+fumaça em ambientes críticos (como datacenters e CPDs).\
+O sistema utiliza **ESP32 + DHT11 + MQ-135**, enviando os dados para o
+**InfluxDB** e exibindo dashboards em tempo real no **Grafana**.
 
-🔒 Diferencial: compatível com redes Wi-Fi que utilizam autenticação via endereço MAC, dispensando captive portals ou autenticação manual.
+🔒 **Diferencial:** compatível com redes Wi-Fi que utilizam
+**autenticação via endereço MAC**, dispensando captive portals ou
+autenticação manual.
 
-📸 Visão Geral
+------------------------------------------------------------------------
 
-O projeto utiliza:
+## 📸 Visão Geral
 
-ESP32 para coleta de dados ambientais.
+O projeto utiliza:\
+- **ESP32** para coleta de dados ambientais\
+- **DHT11** para leitura de temperatura e umidade\
+- **MQ-135** para detectar fumaça/gases\
+- **InfluxDB** para armazenar os dados\
+- **Grafana** para visualização em dashboards\
+- **Docker Compose** para instalação e configuração
 
-Sensor DHT11 para leitura de temperatura e umidade.
+------------------------------------------------------------------------
 
-Sensor MQ-135 para detectar fumaça/gases.
+## 🧰 Requisitos
 
-InfluxDB para armazenar os dados.
+### Hardware
 
-Grafana para visualização dos dados.
+-   ESP32 DevKit\
+-   Sensor DHT11\
+-   Sensor MQ-135\
+-   Jumpers / Protoboard\
+-   Conexão Wi-Fi (sem captive portal, apenas whitelist por MAC)
 
-Docker Compose para facilitar a instalação e configuração do InfluxDB e Grafana.
+### Software
 
-🧰 Requisitos
-Hardware
+-   Arduino IDE (Windows/Linux)\
+-   Docker + Docker Compose\
+-   Bibliotecas Arduino:
+    -   `WiFi.h` (inclusa no ESP32)\
+    -   `DHT.h` (Adafruit)\
+    -   `InfluxDbClient.h`\
+    -   `InfluxDbCloud.h`
 
-ESP32 DevKit
+------------------------------------------------------------------------
 
-Sensor DHT11
+## 💻 Instalação da Arduino IDE
 
-Sensor MQ-135
+### Linux (Ubuntu/Debian)
 
-Jumpers / Protoboard
-
-Conexão Wi-Fi (sem captive portal, apenas MAC whitelist)
-
-Software
-
-Arduino IDE (Windows/Linux)
-
-Docker + Docker Compose
-
-Bibliotecas Arduino:
-
-WiFi.h (inclusa no ESP32)
-
-DHT.h (Adafruit)
-
-InfluxDbClient.h
-
-InfluxDbCloud.h
-
-💻 Instalação da IDE Arduino
-Linux (Ubuntu/Debian)
+``` bash
 sudo apt update
 sudo apt install arduino
+```
 
+Ou baixe do site oficial 👉 [Arduino
+IDE](https://www.arduino.cc/en/software)
 
-Ou baixe do site oficial:
-👉 Arduino IDE
+### Windows
 
-Windows
+1.  Baixe o instalador: [Arduino
+    IDE](https://www.arduino.cc/en/software)\
+2.  Execute e siga os passos\
+3.  Instale os drivers do ESP32, se necessário
 
-Baixe o instalador: Arduino IDE
+------------------------------------------------------------------------
 
-Execute e siga os passos.
+## ⚙️ Configuração da IDE Arduino
 
-Instale os drivers do ESP32, se necessário.
+### Adicionando suporte ao ESP32
 
-⚙️ Configuração da IDE Arduino
-Adicionando suporte ao ESP32
+1.  Vá em **Arquivo \> Preferências**\
 
-Vá em Arquivo > Preferências.
+2.  Em **URLs adicionais para Gerenciadores de Placas**, adicione:
 
-Em URLs adicionais para Gerenciadores de Placas, adicione:
+        https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
 
-https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+3.  Vá em **Ferramentas \> Placa \> Gerenciador de Placas**, busque por
+    *esp32* e instale
 
+### Bibliotecas necessárias
 
-Vá em Ferramentas > Placa > Gerenciador de Placas, busque por esp32 e instale.
+Vá em **Ferramentas \> Gerenciar Bibliotecas** e instale:\
+- **DHT sensor library** (Adafruit)\
+- **InfluxDbClient** (by InfluxData)
 
-Bibliotecas Necessárias
+------------------------------------------------------------------------
 
-No menu Ferramentas > Gerenciar Bibliotecas, instale:
+## 🔌 Esquema de Ligações
 
-DHT sensor library (Adafruit)
-
-InfluxDbClient (by InfluxData)
-
-🔌 Esquema de Ligações
-Componente	Pino ESP32
-DHT11	GPIO 4
-MQ-135	GPIO 34 (entrada analógica)
-VCC (DHT e MQ-135)	3.3V
-GND	GND
+  Componente           Pino ESP32
+  -------------------- ---------------------
+  DHT11                GPIO 4
+  MQ-135               GPIO 34 (analógico)
+  VCC (DHT e MQ-135)   3.3V
+  GND                  GND
 
 📷 ![Esquema de Ligações](ligacao_sensores.jpg)
 
-🔧 Configuração do Código
+------------------------------------------------------------------------
+
+## 🔧 Configuração do Código
 
 Edite no código Arduino:
 
+``` cpp
 #define WIFI_SSID "SUA_REDE_WIFI"
 #define WIFI_PASSWORD "SENHA_WIFI"
 
@@ -107,32 +112,38 @@ Edite no código Arduino:
 #define INFLUXDB_TOKEN "SEU_TOKEN"
 #define INFLUXDB_ORG "SUA_ORGANIZACAO"
 #define INFLUXDB_BUCKET "NOME_DO_BUCKET"
+```
 
-📤 Upload para o ESP32
+### Upload para o ESP32
 
-Conecte o ESP32 via USB.
+1.  Conecte o ESP32 via USB\
+2.  Vá em **Ferramentas \> Placa** e selecione *ESP32 Dev Module*\
+3.  Em **Ferramentas \> Porta**, selecione a porta correta (ex: COM3 ou
+    /dev/ttyUSB0)\
+4.  Clique em **Upload**
 
-Vá em Ferramentas > Placa e selecione ESP32 Dev Module.
+------------------------------------------------------------------------
 
-Em Ferramentas > Porta, selecione a porta correta (ex: COM3 no Windows ou /dev/ttyUSB0 no Linux).
+## 🗃️ Configuração do InfluxDB + Grafana com Docker Compose
 
-Clique em Upload.
+### 1. Instalar Docker e Docker Compose
 
-🗃️ Configuração do InfluxDB + Grafana com Docker Compose
-1. Instalar Docker e Docker Compose
+**Linux (Ubuntu/Debian):**
 
-No Linux (Ubuntu/Debian):
-
+``` bash
 sudo apt update
 sudo apt install docker.io docker-compose -y
 sudo systemctl enable docker
 sudo systemctl start docker
+```
 
+**Windows:**\
+👉 Baixe o [Docker
+Desktop](https://www.docker.com/products/docker-desktop)
 
-No Windows:
-👉 Baixe o Docker Desktop
+### 2. Criar `docker-compose.yml`
 
-2. Criar arquivo docker-compose.yml
+``` yaml
 version: '3.8'
 
 services:
@@ -169,43 +180,61 @@ services:
 volumes:
   influxdb-data:
   grafana-data:
+```
 
-3. Subir os containers
+### 3. Subir os containers
+
+``` bash
 docker compose up -d
+```
 
-4. Acesso
+### 4. Acesso
 
-InfluxDB → http://localhost:8086
+-   **InfluxDB:** http://localhost:8086\
+-   **Grafana:** http://localhost:3000
 
-Grafana → http://localhost:3000
+------------------------------------------------------------------------
 
-📡 Autenticação por MAC Address
+## 📡 Autenticação por MAC Address
 
-Para descobrir o MAC do ESP32:
+Exemplo de código para descobrir o MAC do ESP32:
 
+``` cpp
 #include <WiFi.h>
+
 void setup() {
   Serial.begin(115200);
   Serial.println(WiFi.macAddress());
 }
-void loop() {}
 
+void loop() {}
+```
 
 Abra o monitor serial e copie o MAC para cadastrar no Access Point.
 
-🧪 Exemplo de Saída Serial
-Conectando-se ao Wi-Fi...
-Conectado!
-✅ Conectado ao InfluxDB!
-🌡️ Temp: 25.40°C | 💧 Umid: 61.20% | 🔥 Fumaça: 350.12 ppm
-✅ Dados enviados ao InfluxDB!
+------------------------------------------------------------------------
 
-📈 Visualização com Grafana
+## 🧪 Exemplo de Saída Serial
 
-No Grafana, configure o InfluxDB como Data Source e crie gráficos em tempo real de temperatura, umidade e fumaça.
+    Conectando-se ao Wi-Fi...
+    Conectado!
+    ✅ Conectado ao InfluxDB!
+    🌡️ Temp: 25.40°C | 💧 Umid: 61.20% | 🔥 Fumaça: 350.12 ppm
+    ✅ Dados enviados ao InfluxDB!
 
-![Visualização com Grafana](dashboard.jpg)
+------------------------------------------------------------------------
 
-✅ Conclusão
+## 📈 Visualização com Grafana
 
-Este projeto permite monitorar remotamente ambientes críticos como datacenters, salas técnicas e CPDs, sem necessidade de interação humana para autenticação em redes Wi-Fi protegidas por login.
+No Grafana, configure o InfluxDB como **Data Source** e crie gráficos em
+tempo real de temperatura, umidade e fumaça.
+
+📊 ![Visualização com Grafana](dashboard.jpg)
+
+------------------------------------------------------------------------
+
+## ✅ Conclusão
+
+Este projeto permite monitorar remotamente ambientes críticos como
+datacenters, salas técnicas e CPDs, **sem necessidade de autenticação
+manual**, utilizando apenas whitelist de MAC Address.
